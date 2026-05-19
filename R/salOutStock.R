@@ -106,6 +106,8 @@ saleOutStockEntryUploadServer <- function(input, output, session, dms_token, erp
 
       tsda::db_writeTable2(token = erp_token,table_name = 'rds_dms_ods_t_sal_outStockEntry_input',r_object = data,append = TRUE)
 
+      mdlEMsalOutStockUploadPkg::erp_salOutStock_input_update(erp_token = erp_token)
+
 
       data_erp = mdlEMsalOutStockUploadPkg::erp_outStockEntry_select(erp_token =erp_token )
 
