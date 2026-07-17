@@ -130,6 +130,42 @@ outStockMergeViewServer <- function(input, output, session, dms_token, erp_token
 }
 
 
+#' 处理逻辑
+#'
+#' @param input 输入
+#' @param output 输出
+#' @param session 会话
+#' @param erp_token 口令
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' outStockMergeSyncServer()
+outStockMergeSyncServer <- function(input, output, session, dms_token, erp_token) {
+
+
+
+  shiny::observeEvent(input$btn_outStockMerge_sync, {
+
+
+    mdlEMsalOutStockUploadr::outStockMerge_salOutStockSync()
+
+    tsui::pop_notice("回传成功")
+
+
+
+  })
+
+
+
+
+
+
+}
+
+
+
 
 #' 处理逻辑
 #'
@@ -148,4 +184,6 @@ outStockMergeServer <- function(input, output, session, dms_token, erp_token) {
 
 
   outStockMergeViewServer(input = input, output = output, session = session, dms_token = dms_token, erp_token = erp_token)
+
+  outStockMergeSyncServer(input = input, output = output, session = session, dms_token = dms_token, erp_token = erp_token)
 }
