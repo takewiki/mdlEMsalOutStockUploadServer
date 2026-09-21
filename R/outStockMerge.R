@@ -48,15 +48,13 @@ outStockMergeUploadServer <- function(input, output, session, dms_token, erp_tok
       data = as.data.frame(data)
       data = tsdo::na_standard(data)
 
-      print(1)
+
 
       tsda::db_writeTable2(token = erp_token,table_name = 'rds_src_ods_t_sal_outStock_input',r_object = data,append = TRUE)
 
-      print(2)
 
       mdlEMsalOutStockUploadPkg::erp_outStockMerge_input_update(erp_token =erp_token )
 
-      print(3)
       data_erp = mdlEMsalOutStockUploadPkg::erp_outStock_select(erp_token =erp_token )
 
       tsda::db_writeTable2(token = dms_token,table_name = 'rds_dms_ods_t_sal_outStock_input',r_object = data_erp,append = TRUE)
@@ -108,11 +106,20 @@ outStockMergeViewServer <- function(input, output, session, dms_token, erp_token
 
     text_outStockMerge_FBillNo = tsui::var_text("text_outStockMerge_FBillNo")
 
+    text_date_outStockMerge_FDate = tsui::var_dateRange('text_date_outStockMerge_FDate')
+
+
+    FDate = text_date_outStockMerge_FDate()
+
+    FStartDate = FDate[1]
+
+    FEndDate = FDate[2]
+
     FBillNo=text_outStockMerge_FBillNo()
 
 
 
-    data = mdlEMsalOutStockUploadPkg::dms_sal_outStock_view(dms_token = dms_token,FBillNo =FBillNo )
+    data = mdlEMsalOutStockUploadPkg::dms_sal_outStock_view(dms_token = dms_token,FBillNo =FBillNo,FStartDate,FEndDate)
 
     tsui::run_dataTable2(id = 'outStockMerge_resultView',data = data)
 
